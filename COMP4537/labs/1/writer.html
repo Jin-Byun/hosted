@@ -4,8 +4,194 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Writer</title>
+
+    <style>
+        * {
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+        }
+
+        header {
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            padding-inline: 10px;
+            padding-bottom: 40px;
+            align-items: center;
+            width: 90%;
+        }
+
+        h1 {
+            padding: 1rem 0;
+            width: fit-content;
+        }
+
+        #container {
+            margin: 0 auto;
+            width: 90%;
+            height: fit-content;
+            min-height: 50px;
+            padding: 10px;
+        }
+
+        #words {
+            width: 100%;
+            height: fit-content;
+        }
+
+        .wordCard {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+        }
+        
+        .editable {
+            border: solid 2px #008888;
+            border-radius: 10px;
+            padding: 4px 8px;
+            min-height: 50px;
+            width: calc(95% - 75px);
+        }
+
+        button {
+            font-size: 1em;
+            padding: 6px 4px;
+            font-weight: bold;
+            border-radius: 10px;
+            color: #222222;
+            transition: all 150ms;
+        }
+
+        .remove {
+            width: 75px;
+            height: fit-content;
+            background-color: #FF000088;
+        }
+        .remove:hover {
+            background-color: #AA0000;
+            color: #EEEEEE;
+        }
+        .remove:active {
+            background-color: #AA555588;
+            color: #FF0000;
+        }
+        
+        #add {
+            font-size: 1.2em;
+            padding: 8px;
+            background-color: aqua;
+        }
+        #add:hover {
+            background-color: #00AAAA;
+            color: #EEEEEE;
+        }
+        #add:active {
+            background-color: #009999;
+            color: #00FFFF;
+        }
+
+        .back:hover {
+            background-color: #000000;
+            color: #DDDDDD;
+        }
+        .back:active {
+            background-color: #DDDDDD;
+            color: #FFFFFF;
+        }
+    </style>
 </head>
 <body>
-    <h1>this is writer</h1>
+    <header>
+        <h1>This is where you write things!</h1>
+        <h3 id="update" style="margin-right: 20px;">last update: <span id="counter"></span></h3>
+    </header>
+    
+    <div id="container">
+        <div id="words"></div>
+        <button id="add" type="button" onclick="addWordCard()">ADD Word</button>
+    </div>
+
+    <button class="back" style="margin: 50px auto 0; display: block;" onclick="window.location.href='index.html'">BACK</button>
+
+    <template>
+        <div class="wordCard">
+            <div class="editable" contenteditable></div>
+            <button class="remove" onclick="removeCard(this)">Remove</button>
+        </div>
+    </template>
+
+    <script>
+        class Word {
+            constructor(id, content = "") {
+                this.id = id;
+                this.content = content;
+            }
+        }
+
+        let isChanged = false;
+        let words = parseToWordArray(localStorage.getItem("wordStored")) ?? [];
+
+        for (const {id, content} of words) {
+            const wordContainer = document.getElementById("words");
+            const temp = document.getElementsByTagName("template")[0];
+            const clon = temp.content.cloneNode(true);
+            clon.querySelector(".wordCard").id = id;
+            clon.querySelector(".editable").innerText = content;
+            wordContainer.appendChild(clon);
+        }
+
+        update();
+        
+        function addWordCard() {
+            isChanged = true;
+            const word = new Word(Date.now().toString(16));
+            const wordContainer = document.getElementById("words");
+            const temp = document.getElementsByTagName("template")[0];
+            const clon = temp.content.cloneNode(true);
+            clon.querySelector(".wordCard").id = word.id;
+            words.push(word);
+            wordContainer.appendChild(clon);
+        }
+        function removeCard(e) {
+            isChanged = true;
+            const card = e.parentElement;
+            const id = card.id;
+            words = words.filter(word => word.id !== id);
+            card.remove();
+            localStorage.setItem("wordStored", JSON.stringify(words));
+            const d = new Date();
+            document.getElementById("counter").innerText = d.toLocaleTimeString();
+        }
+        
+        function update() {
+            setTimeout(() => {
+                for (const word of words) {
+                    const card = document.getElementById(word.id);
+                    word.content = card.querySelector(".editable").textContent;
+                }
+                if (isChanged && words.length > 0) {
+                    const d = new Date();
+                    document.getElementById("counter").innerText = d.toLocaleTimeString();
+                    localStorage.setItem("wordStored", JSON.stringify(words));
+                }
+                update();
+            }, 2000);
+        }
+
+        function parseToWordArray(jsonString) {
+            if (!jsonString) return [];
+            const wordList = [];
+            const objArr = JSON.parse(jsonString);
+            objArr.forEach(({id, content}) => {
+                wordList.push(new Word(id, content));
+            });
+            return wordList;
+        }
+        </script>
 </body>
 </html>
