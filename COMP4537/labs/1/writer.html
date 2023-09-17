@@ -134,45 +134,47 @@
     </template>
 
     <script>
+        const WORD_CONTAINER_ID = "words";
+        const WEB_STORAGE_KEY = "wordStored";
+
         class Word {
-            constructor(id, content = "") {
+            constructor(id, wordContainer, content = "") {
                 this.id = id;
                 this.content = content;
+                wordContainer.appendChild(this.init());
+            }
+            init() {
+                return document.createRange().createContextualFragment(
+                    `<div class="wordCard" id="${this.id}">
+                        <div class="editable" contenteditable>${this.content}</div>
+                        <button class="remove" onclick="removeCard(this)">Remove</button>
+                    </div>`
+                );
+            }
+            update(newContent) {
+                this.content = newContent;
+                const card = document.getElementById(this.id);
+                card.firstElementChild.innerText = this.content;
+            }
+            remove() {
+                document.getElementById(this.id).remove();
             }
         }
 
-        let words = parseToWordArray(localStorage.getItem("wordStored"));
+        const words = parseToWordObject(localStorage.getItem("wordStored"));
 
-        for (const {id, content} of words) {
-            const wordContainer = document.getElementById("words");
-            const temp = document.getElementsByTagName("template")[0];
-            const clon = temp.content.cloneNode(true);
-            clon.querySelector(".wordCard").id = id;
-            clon.querySelector(".editable").innerText = content;
-            wordContainer.appendChild(clon);
-        }
-
-        update();
-        
         function addWordCard() {
-            isChanged = true;
-            const word = new Word(Date.now().toString(16));
-            const wordContainer = document.getElementById("words");
-            const temp = document.getElementsByTagName("template")[0];
-            const clon = temp.content.cloneNode(true);
-            clon.querySelector(".wordCard").id = word.id;
-            words.push(word);
-            wordContainer.appendChild(clon);
+            const id = Date.now().toString(16);
+            words[id] = new Word(id, WORD_CONTAINER);
         }
         function removeCard(e) {
-            isChanged = true;
             const card = e.parentElement;
             const id = card.id;
-            words = words.filter(word => word.id !== id);
-            card.remove();
-            localStorage.setItem("wordStored", JSON.stringify(words));
-            const d = new Date();
-            document.getElementById("counter").innerText = d.toLocaleTimeString();
+            words[id].remove();
+            delete words[id];
+            // localStorage.setItem("wordStored", JSON.stringify(words));
+            // const d = new Date();
+            // document.getElementById("counter").innerText = d.toLocaleTimeString();
         }
         
         function update() {
@@ -190,12 +192,12 @@
             }, 2000);
         }
 
-        function parseToWordArray(jsonString) {
-            if (!jsonString) return [];
-            const wordList = [];
+        function parseToWordObject(jsonString) {
+            if (!jsonString) return {};
+            const wordList = {};
             const objArr = JSON.parse(jsonString);
             objArr.forEach(({id, content}) => {
-                wordList.push(new Word(id, content));
+                wordList[id] = new Word(id, document.getElementById(WORD_CONTAINER_ID), content);
             });
             return wordList;
         }
