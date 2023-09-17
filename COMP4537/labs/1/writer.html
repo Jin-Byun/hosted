@@ -30,6 +30,10 @@
             width: fit-content;
         }
 
+        #update {
+            margin-right: 20px;
+        }
+
         #container {
             margin: 0 auto;
             width: 90%;
@@ -95,6 +99,10 @@
             color: #00FFFF;
         }
 
+        .back {
+            margin: 50px auto 0;
+            display: block;
+        }
         .back:hover {
             background-color: #000000;
             color: #DDDDDD;
@@ -108,7 +116,7 @@
 <body>
     <header>
         <h1>This is where you write things!</h1>
-        <h3 id="update" style="margin-right: 20px;">last update: <span id="counter"></span></h3>
+        <h3 id="update">last stored at: <span id="counter"></span></h3>
     </header>
     
     <div id="container">
@@ -116,7 +124,7 @@
         <button id="add" type="button" onclick="addWordCard()">ADD Word</button>
     </div>
 
-    <button class="back" style="margin: 50px auto 0; display: block;" onclick="window.location.href='index.html'">BACK</button>
+    <button class="back" onclick="window.location.href='index.html'">BACK</button>
 
     <template>
         <div class="wordCard">
@@ -133,8 +141,7 @@
             }
         }
 
-        let isChanged = false;
-        let words = parseToWordArray(localStorage.getItem("wordStored")) ?? [];
+        let words = parseToWordArray(localStorage.getItem("wordStored"));
 
         for (const {id, content} of words) {
             const wordContainer = document.getElementById("words");
@@ -174,7 +181,7 @@
                     const card = document.getElementById(word.id);
                     word.content = card.querySelector(".editable").textContent;
                 }
-                if (isChanged && words.length > 0) {
+                if (words.length > 0) {
                     const d = new Date();
                     document.getElementById("counter").innerText = d.toLocaleTimeString();
                     localStorage.setItem("wordStored", JSON.stringify(words));
