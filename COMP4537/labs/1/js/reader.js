@@ -12,7 +12,7 @@ updateReader();
 function updateReader() {
   updateCounter();
   setTimeout(() => {
-    const newIdContentPair = JSON.parse(localStorage.getItem(WEB_STORAGE_KEY));
+    const newIdContentPair = JSON.parse(localStorage.getItem(WEB_STORAGE_KEY)) ?? {};
     const newIds = Object.keys(newIdContentPair);
     const wordContainer = document.getElementById(WORD_CONTAINER_ID);
     for (const id of newIds) {
@@ -23,6 +23,7 @@ function updateReader() {
     for (const id in words) {
       if (newIds.includes(id)) continue;
       words[id].remove();
+      delete words[id];
     }
     updateReader();
   }, 2000);
