@@ -1,6 +1,7 @@
 #!/usr/bin/node
 const PORT = process.env.PORT || 3000;
 const http = require("http");
+const fs = require("fs");
 
 const get_today = () => {
   const today = new Date(Date.now());
@@ -17,9 +18,10 @@ http
       res.end(
         `<h2 style="color: blue">Hello, the time right now is ${get_today()}</h2>`
       );
-    } else if (!req.url.includes("/COMP4537/labs/1")) {
+    } else if ("/COMP4537/labs/1/index.html/".includes(req.url)) {
+    } else {
       res.writeHead(404, { "Content-Type": "text/html" });
-      res.end("<h2>Error!</h2>");
+      res.end(`<h2>${process.cwd()}</h2>`);
     }
   })
   .listen(PORT);
