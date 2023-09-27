@@ -9,7 +9,7 @@ const get_today = () => {
 
 http
   .createServer((req, res) => {
-    if (req.url === "/date") {
+    if (req.url === "/COMP4537/labs/3/date") {
       res.writeHead(200, {
         "Content-Type": "text/html; charset=UTF-8",
         "Cache-Control": "s-max-age=1, stale-while-revalidate",
@@ -17,7 +17,7 @@ http
       res.end(
         `<h2 style="color: blue">Hello, the time right now is ${get_today()}</h2>`
       );
-    } else {
+    } else if (!req.url.includes("/COMP4537/labs/1")) {
       res.writeHead(404, { "Content-Type": "text/html" });
       res.end("<h2>Error!</h2>");
     }
