@@ -6,8 +6,8 @@
   ],
   "routes": [
     {
-      "src": "^/COMP4537/(.*)",
-      "dest": "/COMP4537/$1"
+      "src": "/(.*)",
+      "dest": "server.js"
     }
   ]
 }
