@@ -53,11 +53,12 @@ createServer((req, res) => {
       res.end(data);
     });
   } else {
-    let filepath = path.join(process.cwd() + req.url);
+    const filepath = path.join(process.cwd() + req.url);
     const stream = fs.createReadStream(filepath);
+    const files = fs.readdirSync(process.cwd());
     stream.on('error', (err) => {
       res.writeHead(404, { "Content-Type": "text/html" });
-      res.end(`<h1 style="color: red">ERROR 404 ${err}</h1></br></br></br><h2>${filepath}please go to /COMP4537/labs/3/date</h2>`);
+      res.end(`<h1 style="color: red">ERROR 404 ${filepath}</h1></br></br></br><h2>${files}please go to /COMP4537/labs/3/date</h2>`);
       return;
     });
     let mimeType = mimeLookup[path.extname(filepath)];
