@@ -1,6 +1,7 @@
 #!/usr/bin/node
 const PORT = process.env.PORT || 3000;
 const FILENAME = "file.txt";
+const FILEDIR = "/tmp";
 const {createServer} = require("http");
 const fs = require("fs");
 const path = require("path");
@@ -31,7 +32,7 @@ createServer((req, res) => {
       res.end("Add new text by writing ?text=yourtexthere at the end of the address");
       return;
     }
-    fs.appendFileSync(FILENAME, text, 'utf8');
+    fs.appendFileSync(path.join(FILEDIR, FILENAME), text, 'utf8');
     res.writeHead(200, {
       "Content-Type": "text/html; charset=UTF-8",
       "Cache-Control": "s-max-age=1, stale-while-revalidate",
@@ -39,7 +40,7 @@ createServer((req, res) => {
     res.end(`<h1>"${text}" appended.<h1>`);
   } else if (req.url?.includes("/COMP4537/labs/3/readFile")) {
     const filename = req.url.split("/").at(-1);
-    fs.readFile(filename,(err, data) => {
+    fs.readFile(path.join(FILEDIR, filename),(err, data) => {
       if (err) {
         res.writeHead(404, { "Content-Type": "text" });
         res.end(`file: ${filename} is invalid`);
