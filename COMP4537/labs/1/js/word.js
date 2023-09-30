@@ -1,13 +1,13 @@
 export default class Word {
-  constructor(id, wordContainer, content = "") {
+  constructor(id, wordContainer, content = "", editable) {
     this.id = id;
     this.content = content;
-    wordContainer.appendChild(this.init());
+    wordContainer.appendChild(this.init(editable));
   }
-  init() {
+  init(editable) {
     return document.createRange().createContextualFragment(
       `<div class="wordCard" id="${this.id}">
-              <div class="editable" contenteditable>${this.content}</div>
+              <div class="editable" ${editable ? "contenteditable" : ""}>${this.content}</div>
               <button id="remove-${this.id}" class="remove">Remove</button>
           </div>`
     );

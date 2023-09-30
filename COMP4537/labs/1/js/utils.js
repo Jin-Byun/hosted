@@ -31,12 +31,12 @@ export function removeCard(removeButton, words) {
  * @param {String} jsonString from localStorage
  * @param {Object(id: Word) | {}} wordObj
  */
-export function parseToWordObject(jsonString, wordObj) {
+export function parseToWordObject(jsonString, wordObj, editable = true) {
   if (!jsonString || jsonString === "{}") return;
   const wordContainer = document.getElementById(WORD_CONTAINER_ID);
   const IdContentPairs = JSON.parse(jsonString);
   Object.entries(IdContentPairs).forEach(([id, content]) => {
-    wordObj[id] = new Word(id, wordContainer, content);
+    wordObj[id] = new Word(id, wordContainer, content, editable);
     document.getElementById(`remove-${id}`).addEventListener("click", (e) => {
       removeCard(e.target, wordObj);
     });

@@ -3,7 +3,7 @@ import Word from "./word.js";
 import { parseToWordObject, updateCounter } from "./utils.js";
 
 const words = {};
-parseToWordObject(localStorage.getItem(WEB_STORAGE_KEY), words);
+parseToWordObject(localStorage.getItem(WEB_STORAGE_KEY), words, false);
 updateReader();
 
 /**
