@@ -53,7 +53,7 @@ createServer((req, res) => {
       res.end(data);
     });
   } else {
-    let filepath = path.join(__dirname + req.url);
+    let filepath = path.join(process.cwd() + req.url);
     const stream = fs.createReadStream(filepath);
     stream.on('error', (err) => {
       res.writeHead(404, { "Content-Type": "text/html" });
