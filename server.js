@@ -55,9 +55,9 @@ createServer((req, res) => {
   } else {
     let filepath = path.join(__dirname + req.url);
     const stream = fs.createReadStream(filepath);
-    stream.on('error', () => {
+    stream.on('error', (err) => {
       res.writeHead(404, { "Content-Type": "text/html" });
-      res.end(`<h1 style="color: red">ERROR 404:</h1></br></br></br><h2>${__dirname}please go to /COMP4537/labs/3/date</h2>`);
+      res.end(`<h1 style="color: red">ERROR 404 ${err}</h1></br></br></br><h2>${filepath}please go to /COMP4537/labs/3/date</h2>`);
       return;
     });
     let mimeType = mimeLookup[path.extname(filepath)];
