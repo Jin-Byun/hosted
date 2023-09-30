@@ -27,7 +27,10 @@ createServer((req, res) => {
   } else if (req.url?.includes("/COMP4537/labs/3/writeFile")) {
     const searchParams = new URLSearchParams(req.url.split("?")[1]);
     const text = searchParams.get("text");
-    if (!text) res.end("Add new text by writing ?text=yourtexthere at the end of the address");
+    if (!text) {
+      res.end("Add new text by writing ?text=yourtexthere at the end of the address");
+      return;
+    }
     fs.appendFileSync(FILENAME, text, 'utf8');
     res.writeHead(200, {
       "Content-Type": "text/html; charset=UTF-8",
@@ -40,6 +43,7 @@ createServer((req, res) => {
       if (err) {
         res.writeHead(404, { "Content-Type": "text" });
         res.end(`file: ${filename} is invalid`);
+        return;
       }
       res.writeHead(200, {
         "Content-Type": "text; charset=UTF-8",
@@ -53,9 +57,10 @@ createServer((req, res) => {
     stream.on('error', () => {
       res.writeHead(404, { "Content-Type": "text/html" });
       res.end(`<h1 style="color: red">ERROR 404:</h1></br></br></br><h2>please go to /COMP4537/labs/3/date</h2>`);
+      return;
     });
     let mimeType = mimeLookup[path.extname(filepath)];
-    res.writeHead(200, {'Content-Type': mimeType});
+    if (mimeType) res.writeHead(200, {'Content-Type': mimeType});
     stream.pipe(res);
   }
 }).listen(PORT);
