@@ -1,6 +1,6 @@
 #!/usr/bin/node
 const PORT = process.env.PORT || 3000;
-const FILENAME = "file.txt";
+const FILENAME = "file2.txt";
 const FILEDIR = "/tmp";
 const {createServer} = require("http");
 const fs = require("fs");
