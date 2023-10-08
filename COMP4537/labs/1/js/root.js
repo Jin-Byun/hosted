@@ -1,3 +1,3 @@
-if (location.href.at(-1) === "1") {
+if (!!parseInt(location.href.at(-1))) {
   location.href += "/";
 }
