@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Search your dictionary!</h1>
+    </header>
+    
+    <div class="container">
+        <label for="word">word:</label>
+        <input id="word" type="text" name="word" placeholder="The word goes here">
+        <button id="search" type="button">search</button>
+        <br><br>
+        <div id="display"></div>
+    </div>
+
+    <button class="back" onclick="window.location.href='index.html'">BACK</button>
+    
+    <script src="./js/get.js" type="module"></script>
+</body>
+</html>
