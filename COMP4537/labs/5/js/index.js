@@ -52,12 +52,11 @@ async function sendQuery() {
     displayMessage(errorMsg);
     return;
   }
-  const { rowCount } = await response.json();
-  if (rowCount) {
-    displayInsertMessage(rowCount);
+  const data = await response.json();
+  if (data.rowCount) {
+    displayInsertMessage(data.rowCount);
     return;
   }
-  const data = await response.json();
   displayMessage(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
 }
 
