@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <title>Jin Byun LAB5</title>
+    <script src="https://jinbyun.vercel.app/COMP4537/labs/1/js/root.js"></script>
+</head>
+<body>
+    <h1>Lab 5. DB intro</h1>
+    <br/>
+    <section class="input">
+        <div class="container">
+            <button id="default_patients">Add Default Patients</button>
+            <label for="query">Query <span>press ctrl + enter to add newline</span></label>
+            <textarea name="query" id="query" rows="10" placeholder="Add Insert/Select query here"></textarea>
+            <button id="send" style="float: right;">Send query</button>
+        </div>
+    </section>
+    <section class="output">
+        <h3>Output</h3>
+        <div id="display"></div>
+    </section>
+    <script type="module" src="./js/index.js"></script>
+</body>
+</html>
