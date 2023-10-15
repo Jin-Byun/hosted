@@ -3,8 +3,11 @@ import {
   DEFAULT_PATIENTS,
   TABLE,
   COLUMNS,
-  VALID_METHODS,
+  METHODS,
   KEY,
+  ERROR_EMPTY,
+  ERROR_INVALID_METHOD,
+  ERROR_MULTI_QUERY,
 } from "./constants.js";
 
 document.getElementById("default_patients").addEventListener("click", () => {
@@ -30,15 +33,35 @@ async function addDefaultPatients() {
     method: "POST",
     body: defaultQuery,
   });
+  if (!response.ok) {
+    const errorMsg = `Error ${response.status} : ${await response.text()}`;
+    displayMessage(errorMsg);
+    return;
+  }
   const { rowCount } = await response.json();
   displayInsertMessage(rowCount);
 }
 
+const validatedQuery = () => {
+  const raw_query = document.getElementById("query").value.trim();
+  if (raw_query === "") return displayMessage(ERROR_EMPTY);
+
+  const queries = raw_query.split(";").filter((query) => query !== "");
+  if (queries.length > 1) return displayMessage(ERROR_MULTI_QUERY);
+
+  const [query] = queries;
+  if (!METHODS.includes(query.slice(0, 6).toLowerCase())) {
+    return displayMessage(ERROR_INVALID_METHOD);
+  }
+  return query;
+};
+
 async function sendQuery() {
   const query = validatedQuery();
   if (!query) return;
+
+  const [insert] = METHODS;
   let response;
-  const [insert] = VALID_METHODS;
   if (query.slice(0, 6).toLowerCase() === insert) {
     response = await fetch(ENDPOINT, {
       method: "POST",
@@ -52,31 +75,14 @@ async function sendQuery() {
     displayMessage(errorMsg);
     return;
   }
+  // Insert output
   const data = await response.json();
   if (data.rowCount) {
     displayInsertMessage(data.rowCount);
     return;
   }
+  // Select output
   displayMessage(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
-}
-
-function validatedQuery() {
-  const raw_query = document.getElementById("query").value.trim();
-  if (raw_query === "") {
-    displayMessage("No Empty query.");
-    return "";
-  }
-  const queries = raw_query.split(";").filter((query) => query !== "");
-  if (queries.length > 1) {
-    displayMessage("Please send 1 query at a time.");
-    return "";
-  }
-  const [query] = queries;
-  if (!VALID_METHODS.includes(query.slice(0, 6).toLowerCase())) {
-    displayMessage("only insert and select method is valid.");
-    return "";
-  }
-  return query;
 }
 
 function displayInsertMessage(count) {
@@ -87,6 +93,5 @@ function displayInsertMessage(count) {
 }
 
 function displayMessage(message) {
-  console.log(message);
   display.innerHTML = message;
 }
