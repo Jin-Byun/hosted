@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <header>
+        <button class="back" onclick="window.location.href='index.html'">BACK</button>
+        <h1>Add definition to your dictionary!</h1>
+    </header>
+    
+    <div class="container">
+        <div>
+            <label for="terminology">Word:</label>
+            <input id="terminology" type="text" name="terminology" placeholder="Word goes here">
+            <select id="word_lang">
+                <option value="" disabled selected>Select word language</option>
+            </select>
+        </div>
+        <div id="definition-container">
+            <label for="definition">Definition:</label>
+            <div>
+                <textarea id="definition" name="definition" rows="8" placeholder="Definition goes here"></textarea>
+                <select id="def_lang">
+                    <option value="" disabled selected>Select definition language</option>
+                </select>
+            </div>
+        </div>
+        <button id="add" type="button">ADD Word</button>
+    </div>
+
+    
+    <script src="./js/write.js" type="module"></script>
+</body>
+</html>
