@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store</title>
+    <title>write</title>
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
@@ -14,23 +14,34 @@
     
     <div class="container">
         <div>
-            <label for="terminology">Word:</label>
-            <input id="terminology" type="text" name="terminology" placeholder="Word goes here">
-            <select id="word_lang">
-                <option value="" disabled selected>Select word language</option>
+            <label for="word">Word:</label>
+            <input id="word" type="text" name="word" placeholder="Word goes here">
+            <select id="word-lang">
+                <option value="" disabled selected>language</option>
             </select>
         </div>
         <div id="definition-container">
             <label for="definition">Definition:</label>
             <div>
                 <textarea id="definition" name="definition" rows="8" placeholder="Definition goes here"></textarea>
-                <select id="def_lang">
-                    <option value="" disabled selected>Select definition language</option>
+                <select id="def-lang">
+                    <option value="" disabled selected>language</option>
                 </select>
             </div>
         </div>
         <button id="add" type="button">ADD Word</button>
     </div>
+
+    <dialog class="modal" id="patch-modal">
+        <button class="close" onclick="this.parentElement.close()">&#128473;</button>
+        <h2>Warning!</h2>
+        <p></p>
+        <h3>Update Definition?</h3>
+        <div>
+            <button onclick="this.parentElement.parentElement.close()">Cancel</button>
+            <button id="update">Update</button>
+        </div>
+    </dialog>
 
     
     <script src="./js/write.js" type="module"></script>
