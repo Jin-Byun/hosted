@@ -1,6 +1,5 @@
 from http.server import BaseHTTPRequestHandler
 import json
-import yaml
 from sentence_transformers import SentenceTransformer, util
 
 plain_text = 'text/plain'
@@ -32,7 +31,7 @@ class handler(BaseHTTPRequestHandler):
             return
         self.data_string = self.rfile.read(int(self.headers['Content-Length']))
         keys = {"prompt0", "guess0", "prompt1", "guess1", "prompt2", "guess2"}
-        data = yaml.load(self.data_string.decode('utf-8'), yaml.SafeLoader)
+        data = json.loads(self.data_string.decode('utf-8'))
         if set(data.keys()) != keys:
             self._set_header(400, plain_text)
             self.wfile.write(f'invalid format. require {keys}'.encode('utf-8'))
