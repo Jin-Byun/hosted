@@ -1,5 +1,4 @@
 {
-    "trailingSlash": true,
     "builds": [
         {
             "src": "./server.py",
