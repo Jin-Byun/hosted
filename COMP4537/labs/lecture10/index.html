@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture</title>
+    <style>
+        html, body {
+            font-size: 20px;
+            padding: 1em;
+            background-color: rgb(38, 43, 48);
+            color: beige;
+        }
+        a {
+            color: beige;
+        }
+    </style>
+</head>
+<body>
+    <label for="name">NAME</label>
+    <input type="text" name="name" id="name">
+    <label for="name">NAME</label>
+    <input type="text" name="name">
+    <p id="login">login</p>
+    <p id="something">something</p>
+
+    <script>
+        // fetch('http://localhost:3000/login').then((res) => res.text()).then((text) => console.log(text))
+        fetch('')
+    </script>
+    <h1>what is SSL</h1>
+    <ul>
+        <li>provides encryption, security layer for HTTPS (purchase SSL from provider to be able to host HTTPS page)</li>
+        <li>with HTTPS, browser and server establish encrypted conn thru SSL/TLS handshake</li>
+        <li>to get SSL certificate, you must provide address, credit card number, etc. they can be tracked</li>
+        <li>Also, it allows point to point connection, meaning that there wouldn't be anyone else that can access your data.</li>
+    </ul>
+
+    <h1>OAuth and third party auth</h1>
+    <ul>
+        <li>using oAuth, no need for authentication implementation.</li>
+        <li>oAuth does one more thing, which is granting permisson to share information stored in other app/website</li>
+        <li>std, secure, display google login, etc.</li>
+    </ul>
+    <h2>2 layers</h2>
+    <h3>register website to google (onboarding)</h3>
+    <ol>
+        <li>https://console.developers.google.com</li>
+        <li>give login page, user landing page, </li>
+        <li>upon approval, google will create client key(pub) and secret key(secret for client App)</li>
+        <li>along with the keys, the snippet for google login is given.</li>
+    </ol>
+    <h3>user side</h3>
+    <ol>
+        <li>on login, redirect to OAuth 2 endpoint and include client App id/key</li>
+        <li>use the client id/key to display the form</li>
+        <li>upon user approval, google generates bearer token and redirect to landing page.</li>
+        <li>the bearer token is then stored in the database</li>
+        <li>refresh token exists, and if bearer token exires, use refresh token to get new bearer and refresh token.</li>
+    </ol>
+    <h1>documentation</h1>
+    <a href="https://editor.swagger.io">swagger is a tool to design documentation for API</a>
+</body>
+</html>
